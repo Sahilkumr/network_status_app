@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:network_status_app/network_status/bloc/bloc/network_bloc.dart';
+import 'package:network_status_app/form_validation/form_home.dart';
+import 'package:network_status_app/form_validation/signIn/bloc/signin_bloc.dart';
+import 'package:network_status_app/network_status/cubit/network_cubit.dart';
 
 class NetworkHome extends StatelessWidget {
   const NetworkHome({super.key});
@@ -16,14 +18,22 @@ class NetworkHome extends StatelessWidget {
               'Connection Status',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            BlocConsumer<NetworkBloc, NetworkState>(
+            BlocConsumer<NetworkCubit, NetworkStates>(
               listener: (context, state) {
-                if (state is NetworkConnectedState) {
+                if (state == NetworkStates.connected) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       duration: Duration(seconds: 2),
                       showCloseIcon: true,
                       content: Text('You are Connnected to Internet'),
+                    ),
+                  );
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => BlocProvider(
+                        create: (context) => SigninBloc(),
+                        child: const FormHomeScreen(),
+                      ),
                     ),
                   );
                 } else {
@@ -37,13 +47,13 @@ class NetworkHome extends StatelessWidget {
                 }
               },
               builder: (context, state) {
-                if (state is NetworkConnectedState) {
+                if (state == NetworkStates.connected) {
                   return const Text('Connected',
                       style: TextStyle(
                           color: Colors.green,
                           fontSize: 24,
                           fontWeight: FontWeight.bold));
-                } else if (state is NetworkDisconnectedState) {
+                } else if (state == NetworkStates.disconnected) {
                   return const Text('Disconnect',
                       style: TextStyle(
                           color: Colors.red,
