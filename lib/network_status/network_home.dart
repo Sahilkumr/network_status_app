@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:network_status_app/form_validation/form_home.dart';
-import 'package:network_status_app/form_validation/signIn/bloc/signin_bloc.dart';
 import 'package:network_status_app/network_status/cubit/network_cubit.dart';
+import 'package:network_status_app/sign_in_user/signIn/bloc/signin_bloc.dart';
+import 'package:network_status_app/sign_in_user/signin_screen.dart';
 
 class NetworkHome extends StatelessWidget {
   const NetworkHome({super.key});
@@ -32,7 +32,7 @@ class NetworkHome extends StatelessWidget {
                     MaterialPageRoute(
                       builder: (context) => BlocProvider(
                         create: (context) => SigninBloc(),
-                        child: const FormHomeScreen(),
+                        child: const SignInScreen(),
                       ),
                     ),
                   );

@@ -7,7 +7,10 @@ final class SigninInitial extends SigninState {}
 
 final class SigninValidState extends SigninState {}
 
-final class SigninInvalidState extends SigninState {}
+final class SigninInvalidState extends SigninState {
+  final String whyInvalid;
+  SigninInvalidState({required this.whyInvalid});
+}
 
 final class SinginLoadingState extends SigninState {}
 

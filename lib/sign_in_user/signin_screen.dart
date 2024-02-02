@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:network_status_app/form_validation/signIn/bloc/signin_bloc.dart';
+import 'package:network_status_app/sign_in_user/signIn/bloc/signin_bloc.dart';
 
-class FormHomeScreen extends StatelessWidget {
-  const FormHomeScreen({super.key});
+class SignInScreen extends StatelessWidget {
+  const SignInScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +58,9 @@ class FormHomeScreen extends StatelessWidget {
             ),
             BlocBuilder<SigninBloc, SigninState>(
               builder: (context, state) {
+                if (State is SigninInvalidState) {
+                  return const Text('nerro');
+                }
                 if (state is SinginErrorState) {
                   return Text(
                     state.error.toString(),
@@ -72,18 +75,20 @@ class FormHomeScreen extends StatelessWidget {
             const SizedBox(height: 10),
             BlocBuilder<SigninBloc, SigninState>(
               builder: (context, state) {
-                return (state is SinginLoadingState)
+                return state is SinginLoadingState
                     ? const Center(
                         child: CircularProgressIndicator(),
                       )
                     : OutlinedButton(
                         onPressed: () {
-                          BlocProvider.of<SigninBloc>(context).add(
-                            SingInButtonEvent(
-                              email: emailController.text,
-                              password: passwordController.text,
-                            ),
-                          );
+                          if (state is SigninValidState) {
+                            BlocProvider.of<SigninBloc>(context).add(
+                              SingInButtonEvent(
+                                email: emailController.text,
+                                password: passwordController.text,
+                              ),
+                            );
+                          }
                         },
                         child: const Text('Login'),
                       );
